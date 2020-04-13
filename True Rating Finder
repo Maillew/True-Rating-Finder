@@ -1,0 +1,30 @@
+import numpy as np 
+import math #for factorial, math.factorial(n)
+import matplotlib.pyplot as plt
+import scipy.integrate as integrate
+
+pos = int(input())
+max = int(input())
+neg = max-pos
+
+x_data = np.arange(0,100,0.1)
+y_data = np.arange(0,100,0.1)
+
+
+def choose (a,b):
+  return math.factorial(a)/(math.factorial(b) * math.factorial(a-b))
+
+def f(x):
+  return 100*choose(max,pos) * ((x/100) ** pos) * ((1-x/100)**neg)
+
+
+for  i in range (x_data.size):
+  y_data[i] = f(x_data[i])
+  i = i+1
+
+
+
+fig = plt.figure(1,figsize = (10,10))
+
+plt.plot(x_data,y_data)
+plt.show();
