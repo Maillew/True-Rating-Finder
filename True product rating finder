@@ -1,0 +1,96 @@
+import numpy as np 
+import math #for factorial, math.factorial(n)
+import matplotlib.pyplot as plt
+
+print("Enter Number of Products Compared")
+queries = int(input())
+print("Enter the Minimum Percentage You Want")
+minRating = int (input())
+min = int (-100)
+product = -1
+
+def round_half_up(n, decimals=0):
+        multiplier = 10 ** decimals
+        return math.floor(n*multiplier + 0.5) / multiplier
+
+def choose (a,b):
+  return math.factorial(a)/(math.factorial(b) * math.factorial(a-b))
+
+def f(x):
+  return 100*choose(max,pos) * ((x/100) ** pos) * ((1-x/100)**neg)
+
+
+for q in range (1,queries+1):
+    print("Enter your score out of 5")
+    stars = float(input())
+    stars = stars/5
+    print("Enter the Number of Reviews")
+    
+    max = int(input())
+    while max>1000:
+        max = max/10
+    
+    max = max//1
+    pos = (stars*max)//1
+    
+    neg = max-pos
+
+    x_data = np.arange(0,100,0.1) #dark background
+    y_data = np.arange(0,100,0.1)
+
+
+    sum = 0;
+    total = 0;
+
+    
+
+
+
+    for  i in range (x_data.size):
+      y_data[i] = f(x_data[i])
+      if (minRating <= x_data[i]):
+            sum += y_data[i]
+      total+=y_data[i]
+      i = i+1
+
+
+
+
+    
+
+    percentage = (sum/total)*100
+    acc=percentage
+    percentage = round_half_up(percentage,2)
+
+    print("The probability that the true rating lies is at least " + str(minRating) + "% for product " + str(q) + " is " + str(percentage) + "%")
+    
+    
+    x_fill = np.arange(minRating,100,0.1)
+    y_fill = np.arange(minRating,100,0.1)
+
+    for i in range (x_fill.size):
+        y_fill[i] = f(x_fill[i])
+
+
+    fig = plt.figure(1,figsize = (5,5))
+
+    plt.fill_between(x_data, y_data, color='#00FFF7')
+    plt.fill_between(x_fill,y_fill, color = "#00A2FF")
+
+    plt.xlabel("Percentages")
+    plt.ylabel("Probability Density")
+    plt.title("PDF for Product " + str(q))
+
+    plt.axvline(x=minRating)
+
+
+    plt.plot(x_data,y_data)
+    plt.show();
+    
+    if acc>min:
+        
+        min = acc
+        product = q
+        
+min = round_half_up(min,2)    
+print("The best product is Product " + str(product) + " with a expected chance of " + str(min) + "% to get over " + str(minRating) + "%")
