@@ -1,0 +1,53 @@
+import numpy as np 
+import math #for factorial, math.factorial(n)
+import matplotlib.pyplot as plt
+
+
+pos = int(input())
+max = int(input())
+neg = max-pos
+
+range1 = int (input())
+range2 = int (input())
+
+range1 = range1
+range2 = range2
+
+x_data = np.arange(0,100,0.1)
+y_data = np.arange(0,100,0.1)
+
+sum = 0;
+total = 0;
+
+def choose (a,b):
+  return math.factorial(a)/(math.factorial(b) * math.factorial(a-b))
+
+def f(x):
+  return 100*choose(max,pos) * ((x/100) ** pos) * ((1-x/100)**neg)
+
+for  i in range (x_data.size):
+  y_data[i] = f(x_data[i])
+  if (range1 <= x_data[i] and x_data[i] <=range2):
+        sum += y_data[i]
+  total+=y_data[i]
+  i = i+1
+
+
+def round_half_up(n, decimals=0):
+    multiplier = 10 ** decimals
+    return math.floor(n*multiplier + 0.5) / multiplier
+
+percentage = sum/total
+
+percentage = round_half_up(percentage,4)
+
+print("The probability that the true rating lies exactly between " + str(range1) + " and " + str(range2) + " is " + str((sum/total)*100) + "%")
+
+fig = plt.figure(1,figsize = (10,10))
+plt.fill_between(x_data, y_data, color='#00FFF7')
+plt.xlabel("Percentages")
+plt.ylabel("Probability Density")
+plt.title("What is the possibility of product having a certain rating, given the number of positive and negative reviews?")
+
+plt.plot(x_data,y_data)
+plt.show();
